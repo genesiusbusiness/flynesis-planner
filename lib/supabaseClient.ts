@@ -1,8 +1,15 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-// Configuration Supabase - Projet Flynesis
-const supabaseUrl = 'https://yxkbvhymsvasknslhpsa.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4a2J2aHltc3Zhc2tuc2xocHNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2NzI1MjQsImV4cCI6MjA3NzI0ODUyNH0.zbE1YiXZXDEgpLkRS9XDU8yt4n4EiQItU_YSoEQveTM'
+// Configuration Supabase - Variables d'environnement
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  if (typeof window === 'undefined') {
+    console.error('❌ Variables d\'environnement Supabase manquantes!')
+    console.error('Vérifiez que NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY sont définies')
+  }
+}
 
 // Fonction pour obtenir le client singleton
 function getSupabaseClient(): SupabaseClient {
@@ -31,8 +38,8 @@ function getSupabaseClient(): SupabaseClient {
   }
   
   return createClient(
-    supabaseUrl,
-    supabaseAnonKey,
+    supabaseUrl || '',
+    supabaseAnonKey || '',
     {
       auth: {
         persistSession: false,
